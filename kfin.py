@@ -1,17 +1,31 @@
-import httpx
-import os
-import json
-import koreaexim.exchange_rate
+from enum import Enum
+from koreaexim.exchange_rate import *
+
+class Currency(Enum):
+    AED = "AED"
+    AUD = "AUD"
+    BHD = "BHD"
+    BND = "BND"
+    CAD = "CAD"
+    CHF = "CHF"
+    CNY = "CNH"
+    DKK = "DKK"
+    EUR = "EUR"
+    GBP = "GBP"
+    HKD = "HKD"
+    IDR = "IDR(100)"
+    JPY = "JPY(100)"
+    KRW = "KRW"
+    KWD = "KWD"
+    MYR = "MYR"
+    NOK = "NOK"
+    NZD = "NZD"
+    SAR = "SAR"
+    SEK = "SEK"
+    SGD = "SGD"
+    THB = "THB"
+    USD = "USD"
 
 
-def get_get_exchange_rates():
-    uri = "https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey={0}&data={1}".format(
-        os.environ["KOREAEXIM_KEY"], "AP01")
-    response = httpx.get(uri)
-    items = json.loads(response.text, object_hook=koreaexim.exchange_rate.ExchangeRate.from_dict)
-    return items
-
-def get_get_exchange_rate(cur_unit):
-    for item in get_get_exchange_rates():
-        if item.cur_unit == cur_unit:
-            return item
+def get_exchange_rate(cur_unit):
+    return [item for item in get_exchange_rates() if item.cur_unit == cur_unit.value]

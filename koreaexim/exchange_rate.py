@@ -1,4 +1,5 @@
-
+import os, json
+import httpx
 class ExchangeRate:
     def __init__(self, result, cur_unit, ttb, tts, deal_bas_r, bkpr, yy_efee_r, ten_dd_efee_r, kftc_bkpr, kftc_deal_bas_r, cur_nm):
         self.result = result
@@ -19,3 +20,14 @@ class ExchangeRate:
     @classmethod
     def from_dict(cls, d):
         return cls(**d)
+
+def get_exchange_rates():
+    assert os.environ["KOREAEXIM_KEY"] != None
+    uri = "https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey={0}&data={1}".format(
+        os.environ["KOREAEXIM_KEY"], "AP01")
+    response = httpx.get(uri)
+    items = json.loads(response.text, object_hook=ExchangeRate.from_dict)
+    return items
+
+def get_exchange_rate(cur_unit):
+    return [item for item in get_exchange_rates() if item.cur_unit == cur_unit.value]
