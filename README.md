@@ -12,3 +12,13 @@
 ```
 pip install kfin
 ```
+
+## Usage
+
+```python
+import kfin
+from kfin import *
+
+# Get KRW to USD exchange rate
+kfin.get_exchange_rate(Currency.USD)
+```

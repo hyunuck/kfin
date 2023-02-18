@@ -1,5 +1,6 @@
 from enum import Enum
-from koreaexim.exchange_rate import *
+from kfin.koreaexim.exchange_rate import *
+
 
 class Currency(Enum):
     AED = "AED"
